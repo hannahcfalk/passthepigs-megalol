@@ -91,6 +91,7 @@ INSTALLED_APPS = [
 
     # packages
     'django_extensions',
+
 ]
 
 MIDDLEWARE = [

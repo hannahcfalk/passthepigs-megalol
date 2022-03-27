@@ -23,7 +23,7 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('polls:index')
+            return redirect('polls:start-game')
 
     else:
         form = SignUpForm()
@@ -31,28 +31,40 @@ def sign_up(request):
 
 
 @login_required
-def index(request):
+def highscores(request):
+    return render(request, "polls/highscores.html", {'high_scores' : HighScores.objects.all().order_by('-highscore')})
+
+
+@login_required
+def start_game(request):
+    return render(request, "polls/start-game.html")
+
+
+@login_required
+def save_game(request):
+    score, _ = Score.objects.get_or_create(user=request.user)
+    highscore, _ = HighScores.objects.get_or_create(user=request.user)
+    if score.value > highscore.highscore:
+        highscore.highscore = score.value
+        highscore.save()
+    score.value = 0
+    score.save()
+    return redirect('polls:highscores')
+
+
+@login_required
+def play_game(request):
     pig_position = PigPosition.objects.order_by('?').first()
     score, _ = Score.objects.get_or_create(user=request.user)
-    score.count += 1
-    if pig_position.points == -1:
+    if pig_position.url_name == "makinbacon":
         score.value = 0
-    elif pig_position.points == -2:
+    elif pig_position.url_name == "piggyback":
         score.value = 0
-        return render(request, 'polls/game-over.html', {'score': score.value, 'high_scores': HighScores.objects.all()})
+        score.save()
+        return render(request, 'polls/game-over.html', {'score': score.value})
     else:
         score.value += pig_position.points
     score.save()
-    if score.value >= 100:
-        high_score, _ = HighScores.objects.get_or_create(user=request.user)
-        if high_score.min_count > score.count:
-            high_score.min_count = score.count
-            high_score.save()
-        current_score = score.value
-        score.value = 0
-        score.count = 0
-        score.save()
-        return render(request, 'polls/game-over.html', {'score': current_score, 'high_scores': HighScores.objects.all()})
-    return render(request, 'polls/index.html', {'pig_position': pig_position, 'score': score.value})
+    return render(request, 'polls/play-game.html', {'pig_position': pig_position, 'score': score.value})
 
 

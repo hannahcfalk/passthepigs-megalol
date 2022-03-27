@@ -14,11 +14,16 @@
 
 from django.contrib import admin
 
-from .models import PigPosition
+from .models import PigPosition, HighScores
 
 
 class PigPositionAdmin(admin.ModelAdmin):
     list_display = ['name', 'points']
 
 
+class HighScoresAdmin(admin.ModelAdmin):
+    list_display = ['user', 'highscore']
+
+
 admin.site.register(PigPosition, PigPositionAdmin)
+admin.site.register(HighScores, HighScoresAdmin)

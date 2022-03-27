@@ -18,6 +18,9 @@ from . import views
 
 app_name = 'polls'
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.start_game, name='start-game'),
+    path('play/', views.play_game, name='play-game'),
+    path('save/', views.save_game, name='save-game'),
+    path('highscores/', views.highscores, name='highscores'),
     path('sign_up/', views.sign_up, name='sign_up'),
 ]
