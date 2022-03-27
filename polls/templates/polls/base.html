@@ -4,12 +4,19 @@
     * {
       font-family: "Comic Sans MS", sans-serif;
     }
+        body {
+    background-color: pink;
+    }
+
+        .nav-link {
+      color: rgb(255,0,212);
+    }
   </style>
 
 
 {% endblock %}
-
-<nav class="navbar navbar-light bg-light">
+<body>
+<nav class="navbar" >
         <a class="nav-link" href="{% url 'polls:play-game' %}">Play Game</a>
           <a class="nav-link" href="{% url 'polls:highscores' %}">High Scores</a>
         <a class="nav-link" href="/accounts/logout/">Logout</a>
@@ -18,4 +25,6 @@
 
 {% block content %}
 {% endblock %}
+</body>
+
 

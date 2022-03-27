@@ -1,7 +1,61 @@
 {% extends 'polls/base.html' %}
 {% block content %}
-      <h1>Welcome {{ request.user.username }}!</h1>
+<div style="text-align: center;">
+          <h1>Welcome {{ request.user.username }}!</h1>
+    <h3>So you wanna play Pass the Piggies? Simply click play game to play.
+      Each time you throw the pigs you will receive a score, the aim is to get as high a score as possible!
+    (see below for point counts). But be warned, some positions will make your score reset to 0, so
+    you better save before it's too late!</h3>
+</div>
 
-</body>
+<br>
+<br>
+<div class="container">
+  <div class="row">
+  {% for position in pig_positions %}
+  {%  if forloop.counter|divisibleby:4 %}
+    <div class="col-md-3">
+      <div class="card" style="width: 18rem; border: solid black 1px;">
+      <img src="https://storage.googleapis.com/passthepigs-megalol.appspot.com/{{ position.url_name }}.png" alt="{{ pig_position.name }} image" width="183px" height="150px">
+  <div class="card-body">
+    <h2> {{ position.name }}</h2>
+    {% if position.points >= 0 %}
+    <h4><strong>{{ position.points }}</strong></h4>
+    {% else %}
+    <h4><strong>Lose points</strong></h4>
+    {% endif %}
+    <p class="card-text">{{ position.description }}</p>
+  </div>
+</div>
+
+<br><br>
+
+    </div>
+  </div>
+  {% if not forloop.last %}
+  <div class="row">
+  {% endif %}
+  {% else %}
+<div class="col-md-3">
+      <div class="card" style="width: 18rem; border: solid black 1px;"">
+      <img src="https://storage.googleapis.com/passthepigs-megalol.appspot.com/{{ position.url_name }}.png" alt="{{ pig_position.name }} image" width="183px" height="150px">
+  <div class="card-body">
+    <h2> {{ position.name }}</h2>
+        {% if position.points >= 0 %}
+    <h4><strong>{{ position.points }}</strong></h4>
+    {% else %}
+    <h4><strong>Lose points</strong></h4>
+    {% endif %}
+    <p class="card-text">{{ position.description }}</p>
+  </div>
+</div>
+
+
+
+    </div>
+  {% endif %}
+  {% endfor %}
+  </div>
+</div>
 
 {% endblock %}

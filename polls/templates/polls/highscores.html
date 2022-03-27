@@ -1,9 +1,12 @@
 
 {% extends 'polls/base.html' %}
 {% block content %}
-<h1>High Scores!</h1>
+<div style="text-align: center;">
+   <h1>High Scores!</h1>
 {% for score in high_scores %}
    <p>{{ score.user.username }}: {{ score.highscore }}</p>
 {% endfor %}
+</div>
+
 
 {% endblock %}

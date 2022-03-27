@@ -37,7 +37,7 @@ def highscores(request):
 
 @login_required
 def start_game(request):
-    return render(request, "polls/start-game.html")
+    return render(request, "polls/start-game.html", {'pig_positions': PigPosition.objects.all()})
 
 
 @login_required
