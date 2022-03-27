@@ -29,3 +29,9 @@ class PigPosition(models.Model):
 class Score(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     value = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)
+
+
+class HighScores(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    min_count = models.IntegerField(default=1000)

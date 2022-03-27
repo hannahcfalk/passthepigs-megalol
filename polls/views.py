@@ -14,7 +14,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .models import PigPosition, Score
+from .models import PigPosition, Score, HighScores
 from .forms import SignUpForm
 
 
@@ -23,7 +23,7 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('wordchain:home')
+            return redirect('polls:index')
 
     else:
         form = SignUpForm()
@@ -34,11 +34,25 @@ def sign_up(request):
 def index(request):
     pig_position = PigPosition.objects.order_by('?').first()
     score, _ = Score.objects.get_or_create(user=request.user)
-    if pig_position.points < 0:
+    score.count += 1
+    if pig_position.points == -1:
         score.value = 0
+    elif pig_position.points == -2:
+        score.value = 0
+        return render(request, 'polls/game-over.html', {'score': score.value, 'high_scores': HighScores.objects.all()})
     else:
         score.value += pig_position.points
     score.save()
+    if score.value >= 100:
+        high_score, _ = HighScores.objects.get_or_create(user=request.user)
+        if high_score.min_count > score.count:
+            high_score.min_count = score.count
+            high_score.save()
+        current_score = score.value
+        score.value = 0
+        score.count = 0
+        score.save()
+        return render(request, 'polls/game-over.html', {'score': current_score, 'high_scores': HighScores.objects.all()})
     return render(request, 'polls/index.html', {'pig_position': pig_position, 'score': score.value})
 
 

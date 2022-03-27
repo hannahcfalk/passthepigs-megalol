@@ -131,8 +131,21 @@ DATABASES = {"default": env.db()}
 
 # If the flag as been set, configure to use proxy
 if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
-    DATABASES["default"]["PORT"] = 5432
+    DATABASES["default"] = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'passthepigs',
+        'USER': 'passthepigs',
+        'PASSWORD': 'helloworld123',
+        # For MySQL, set 'PORT': '3306' instead of the following. Any Cloud
+        # SQL Proxy instances running locally must also be set to tcp:3306.
+        'PORT': '5432',
+    }
+
+DATABASES['default']['HOST'] = '/cloudsql/passthepigs-megalol:us-east4:passthepigs-db'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1' # DB's IP address
 
 # [END gaestd_py_django_database_config]
 # [END db_setup]
