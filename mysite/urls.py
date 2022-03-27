@@ -20,6 +20,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("polls.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
     path("admin/", admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # [END gaestd_py_django_local_static]

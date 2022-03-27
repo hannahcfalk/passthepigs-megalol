@@ -14,6 +14,41 @@ See the License for the specific language governing permissions and
 limitations under the License.
 {% endcomment %}
 
-Hello, world. You're at the polls index.
+<head>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+
+
+    <div class="container">
+ <div class="row justify-content-center">
+  <div class="col-md-4 col-md-offset-5 align-center ">
+
+
+
+      <h1>Welcome {{ request.user.username }}!</h1>
+      <p>You have thrown {{ pig_position.name }}</p>
+        <p>Your current score is {{ score }}</p>
+        <img src="https://storage.googleapis.com/passthepigs-megalol.appspot.com/{{ pig_position.url_name }}.png" alt="{{ pig_position.name }} image" width="183px" height="150px">
+    </div>
+       <div class="col-md-4 col-md-offset-5 align-center ">
+           <form action="/">
+               <button type="submit">Throw pigs</button>
+           </form>
+    </div>
+
+ </div>
+    </div>
+
+
+
+
+
+
+</body>
+
+
 
 

@@ -11,51 +11,34 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
-from django.http import HttpResponse, HttpResponseRedirect # noqa: 401
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.views import generic
-
-from .models import Choice, Question
+from .models import PigPosition, Score
+from .forms import SignUpForm
 
 
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+def sign_up(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('wordchain:home')
 
-    def get_queryset(self):
-        """Return the last five published questions."""
-        print("hi")
-        return Question.objects.order_by('-pub_date')[:5]
-
-
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'polls/detail.html'
-
-
-class ResultsView(generic.DetailView):
-    model = Question
-    template_name = 'polls/results.html'
-
-
-def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
-        })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(
-            reverse('polls:results', args=(question.id,))
-        )
+        form = SignUpForm()
+    return render(request, "registration/sign_up.html", {'form': form})
+
+
+@login_required
+def index(request):
+    pig_position = PigPosition.objects.order_by('?').first()
+    score, _ = Score.objects.get_or_create(user=request.user)
+    if pig_position.points < 0:
+        score.value = 0
+    else:
+        score.value += pig_position.points
+    score.save()
+    return render(request, 'polls/index.html', {'pig_position': pig_position, 'score': score.value})
+
+

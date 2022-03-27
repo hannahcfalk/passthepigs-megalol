@@ -71,11 +71,11 @@ if APPENGINE_URL:
     if not urlparse(APPENGINE_URL).scheme:
         APPENGINE_URL = f"https://{APPENGINE_URL}"
 
-    ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
+    ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc, "passthepigs-megalol.appspot.com/*"]
     CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
     SECURE_SSL_REDIRECT = True
 else:
-    ALLOWED_HOSTS = ["*"]
+    ALLOWED_HOSTS = ["*",]
 # [END gaestd_py_django_csrf]
 
 # Application definition
@@ -88,6 +88,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # packages
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -179,3 +182,7 @@ STATICFILES_DIRS = []
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Authentication
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

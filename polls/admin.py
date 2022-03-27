@@ -14,7 +14,11 @@
 
 from django.contrib import admin
 
-from .models import Choice, Question
+from .models import PigPosition
 
-admin.site.register(Question)
-admin.site.register(Choice)
+
+class PigPositionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'points']
+
+
+admin.site.register(PigPosition, PigPositionAdmin)
