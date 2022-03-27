@@ -17,6 +17,7 @@
 {% endblock %}
 <body>
 <nav class="navbar" >
+      <a class="nav-link" href="{% url 'polls:start-game' %}">Instructions</a>
         <a class="nav-link" href="{% url 'polls:play-game' %}">Play Game</a>
           <a class="nav-link" href="{% url 'polls:highscores' %}">High Scores</a>
         <a class="nav-link" href="/accounts/logout/">Logout</a>

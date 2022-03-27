@@ -1,7 +1,7 @@
 {% extends 'polls/base.html' %}
 {% block content %}
 <div style="text-align: center;">
-          <h1>Welcome {{ request.user.username }}!</h1>
+          <h1>Welcome {{ request.user.first_name }}!</h1>
     <h3>So you wanna play Pass the Piggies? Simply click play game to play.
       Each time you throw the pigs you will receive a score, the aim is to get as high a score as possible!
     (see below for point counts). But be warned, some positions will make your score reset to 0, so
@@ -37,7 +37,7 @@
   {% endif %}
   {% else %}
 <div class="col-md-3">
-      <div class="card" style="width: 18rem; border: solid black 1px;"">
+      <div class="card" style="width: 18rem; border: solid black 1px;">
       <img src="https://storage.googleapis.com/passthepigs-megalol.appspot.com/{{ position.url_name }}.png" alt="{{ pig_position.name }} image" width="183px" height="150px">
   <div class="card-body">
     <h2> {{ position.name }}</h2>
